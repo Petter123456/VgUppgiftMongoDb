@@ -4,6 +4,8 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq; 
+
 
 namespace VgUppgiftMongoDb
 {
@@ -12,9 +14,76 @@ namespace VgUppgiftMongoDb
         static void Main(string[] args)
         {
             MainAsync().Wait();
+            ReturnAll(); 
 
             Console.WriteLine("Press enter to exit");
             Console.ReadLine();
+        }
+
+        private static void ReturnAll()
+        {
+
+            MongoClient mongoClient = new MongoClient("mongodb://localhost:27017");
+            var db = mongoClient.GetDatabase("labbb3");
+            var collection = db.GetCollection<BsonDocument>("restaurants");
+             
+            //Skriv en metod som skriver ut(Console.Writeline) alla dokument i samlingen. 
+          //  var allDocuments = collection.Find(new BsonDocument()).ToList();
+
+            //foreach (var restaurants in allDocuments)
+            //{
+            //    Console.WriteLine(restaurants);
+            //}
+            //Skriv en metod som skriver ut namnet på alla dokument som har kategorin “Cafe” 
+            //OBS! Exkludera id så att bara namn visas
+            var filterCategoryCafe = Builders<BsonDocument>.Filter.Eq("categories", "Cafe");
+            var projection = Builders<BsonDocument>.Projection.Exclude("_id");
+            var findWithProjection = collection.Find(filterCategoryCafe).Project(projection);
+
+            //foreach (var restaurant in findWithProjection.ToEnumerable())
+            //{
+            //    Console.WriteLine(restaurant); 
+
+            //}
+
+
+            //Skriv en metod som uppdaterar genom increment “stars” för den restaurang som har “name” “XYZ Coffee Bar” så att nya värdet på stars blir 6.
+            //OBS! Ni ska använda increment . 
+            //OBS! Skriv ut alla restauranger igen, så att jag kan se att “stars” blivit 6, för denna restaurang när jag kör ert program. 
+
+            //var filter = Builders<BsonDocument>.Filter.Eq("name", "XYZ Coffee Bar");
+            //var update = Builders<BsonDocument>.Update.Inc("stars", 1);
+
+            //collection.UpdateOne(filter, update);
+
+            //var allDocuments = collection.Find(new BsonDocument()).ToList();
+
+            //foreach (var restaurants in allDocuments)
+            //{
+            //    Console.WriteLine(restaurants);
+            //}
+
+            //Skriv en metod som uppdaterar “name” för "456 Cookies Shop" till “123 Cookies Heaven” 
+            //OBS! Skriv ut alla restauranger igen, så att jag kan se att namnet ändrats för denna restaurang när jag kör ert program. 
+
+            //var filter = Builders<BsonDocument>.Filter.Eq("name", "456 Cookies Shop");
+            //var update = Builders<BsonDocument>.Update.Set("name", "123 Cookies Heaven");
+
+            //collection.UpdateOne(filter, update);
+
+            //var allDocuments = collection.Find(new BsonDocument()).ToList();
+
+            //foreach (var restaurants in allDocuments)
+            //{
+            //    Console.WriteLine(restaurants);
+            //}
+
+
+            //Skriv en metod som aggregerar en lista med alla restauranger som har 
+            //4 eller fler “stars” och skriver ut endast “name” och “stars” 
+            //OBS! Metoderna ska skriva ut via Console.Writeline resultatet, det vill säga, när jag kör ert program ska jag se resultatet från utskrifterna. 
+            
+               
         }
 
         static async Task MainAsync()
@@ -26,8 +95,17 @@ namespace VgUppgiftMongoDb
 
             var collection = db.GetCollection<Restaurants>("restaurants");
             var newRestaurants = CreateNewRestaurants();
+            var collectionCount = collection.Count(new BsonDocument());
 
-            await collection.InsertManyAsync(newRestaurants);
+            if (collectionCount > 0)
+            {
+                Console.WriteLine("Database has values");
+            }
+            else
+            {
+                await collection.InsertManyAsync(newRestaurants);
+
+            }
         }
 
         private static IEnumerable<Restaurants> CreateNewRestaurants()
