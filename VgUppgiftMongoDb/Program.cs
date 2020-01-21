@@ -11,173 +11,73 @@ namespace VgUppgiftMongoDb
     {
         static void Main(string[] args)
         {
+            MainAsync().Wait();
 
-            MongoClient mongoClient = new MongoClient("mongodb://localhost:27017");
-
-            var db = mongoClient.GetDatabase("lab3");
-            var collection = db.GetCollection<BsonDocument>("restaurant");
-            
-            
-            //var newCustomers = new List<BsonDocument>();
-
-            //var newCustomers = CreateNewCustomers();
-
-            collection.InsertOne(new BsonDocument
-            {
-                {"id", "5c39f9b5df831369c19b6bca" },
-                {"name", "Sun Bakery Trattoria"},
-                {"stars", 4},
-                {"categories", new BsonArray
-                    {
-                       {"Pizza" }, {"Pasta" }, {"Italian" }, {"Coffe" },{"Sandwitches" }
-                    }
-                }
-            });
-
-            collection.InsertOne(new BsonDocument
-            {
-                {"id", "5c39f9b5df831369c19b6bcb" },
-                {"name", "Blue Bagels Grill"},
-                {"stars", 3},
-                {"categories", new BsonArray
-                    {
-                        {"Bagels" }, {"Cookies" }, {"Sandwiches" }
-                    }
-                }
-            });
-
-            collection.InsertOne(new BsonDocument
-            {
-                {"id", "5c39f9b5df831369c19b6bcc" },
-                {"name", "Hot Bakery Cafe"},
-                {"stars", 4},
-                {"categories", new BsonArray
-                    {
-                        {"Bakery" },{"Cafe" },{"Coffee" },{"Dessert"}
-                    }
-                }
-            });
-
-            collection.InsertOne(new BsonDocument
-            {
-                {"id", "5c39f9b5df831369c19b6bcd" },
-                {"name", "XYZ Coffee Bar"},
-                {"stars", 5},
-                {"categories", new BsonArray
-                    {
-                        {"Coffee" }, {"Cafe" }, {"Bakery" }, {"Chocolates"}
-                    }
-                }
-            });
-
-            collection.InsertOne(new BsonDocument
-            {
-                {"id", "5c39f9b5df831369c19b6bce" },
-                {"name", "456 Cookies Shop"},
-                {"stars", 4},
-                {"categories", new BsonArray
-                    {
-                        {"Bakery" }, {"Cookies" }, {"Cake" }, {"Coffee"}
-                    }
-                }
-            });
-
-
-            //newCustomers.Add(customer1);
-            //newCustomers.Add(customer2);
-            //newCustomers.Add(customer3);
-            //newCustomers.Add(customer4);
-            //newCustomers.Add(customer5);
-
-
-            //collection.InsertManyAsync(newCustomers);
-
+            Console.WriteLine("Press enter to exit");
+            Console.ReadLine();
         }
 
-        // static async Task MainAsync()
-        //{
-        //    MongoClient mongoClient = new MongoClient("mongodb://localhost:27017");
+        static async Task MainAsync()
+        {
 
-        //    var db = mongoClient.GetDatabase("labb3");
-        //    var collection = db.GetCollection<BsonDocument>("restaurants");
-        //    var newCustomers = CreateNewCustomers();
+            var client = new MongoClient();
 
-        //    await collection.InsertManyAsync(newCustomers); 
+            IMongoDatabase db = client.GetDatabase("labbb3");
 
-        //}
+            var collection = db.GetCollection<Restaurants>("restaurants");
+            var newRestaurants = CreateNewRestaurants();
 
-        //private static IEnumerable<BsonDocument> CreateNewCustomers()
-        //{
-        //    var customer1 = new BsonDocument
-        //    {
-        //        {"id", "5c39f9b5df831369c19b6bca" },
-        //        { "name", "Sun Bakery Trattoria"},
-        //        {"stars", 4},
-        //        {"categories", new BsonArray
-        //            {
-        //               {"Pizza" }, {"Pasta" }, {"Italian" }, {"Coffe" },{"Sandwitches" } 
-        //            }
-        //        }
-        //    };
+            await collection.InsertManyAsync(newRestaurants);
+        }
 
-        //    var customer2 = new BsonDocument
-        //    {
-        //        {"id", "5c39f9b5df831369c19b6bcb" },
-        //        { "name", "Blue Bagels Grill"},
-        //        {"stars", 3},
-        //        {"categories", new BsonArray
-        //            {
-        //                {"Bagels" }, {"Cookies" }, {"Sandwiches" }
-        //            }
-        //        }
-        //    };
+        private static IEnumerable<Restaurants> CreateNewRestaurants()
+        {
+            var restaurant1 = new Restaurants
+            {
+                id = "5c39f9b5df831369c19b6bca",
+                name = "Sun Bakery Trattoria",
+                categories = new List<string>() { "Pizza", "Pasta", "Italian", "Coffee", "Sandwiches" },
+                stars = 4,
+            };
 
-        //    var customer3 = new BsonDocument
-        //    {
-        //        {"id", "5c39f9b5df831369c19b6bcc" },
-        //        { "name", "Hot Bakery Cafe"},
-        //        {"stars", 4},
-        //        {"categories", new BsonArray
-        //            {
-        //                {"Bakery" },{"Cafe" },{"Coffee" },{"Dessert"}
-        //            }
-        //        }
-        //    };
+            var restaurant2 = new Restaurants
+            {
+                id = "5c39f9b5df831369c19b6bcb",
+                name = "Blue Bagels Grill",
+                categories = new List<string> { "Bagels", "Cookies", "Sandwiches" },
+                stars = 3,
+            };
 
-        //    var customer4 = new BsonDocument
-        //    {
-        //        {"id", "5c39f9b5df831369c19b6bcd" },
-        //        { "name", "XYZ Coffee Bar"},
-        //        {"stars", 5},
-        //        {"categories", new BsonArray
-        //            {
-        //                {"Coffee" }, {"Cafe" }, {"Bakery" }, {"Chocolates"}
-        //            }
-        //        }
-        //    };
+            var restaurant3 = new Restaurants
+            {
+                id = "5c39f9b5df831369c19b6bcc",
+                name = "Hot Bakery Cafe",
+                categories = new List<string> { "Bakery","Cafe","Coffee","Dessert"},
+                stars = 4,
+            };
 
-        //    var customer5 = new BsonDocument
-        //    {
-        //        {"id", "5c39f9b5df831369c19b6bce" },
-        //        { "name", "456 Cookies Shop"},
-        //        {"stars", 4},
-        //        {"categories", new BsonArray
-        //            {
-        //                {"Bakery" }, {"Cookies" }, {"Cake" }, {"Coffee"}
-        //            }
-        //        }
-        //    };
+            var restaurant4 = new Restaurants
+            {
+                id = "5c39f9b5df831369c19b6bcd",
+                name = "XYZ Coffee Bar",
+                categories = new List<string> { "Coffee", "Cafe", "Bakery", "Chocolates" },
+                stars = 5,
+            };
 
-        //    var newCustomers = new List<BsonDocument>();
-        //    newCustomers.Add(customer1);
-        //    newCustomers.Add(customer2);
-        //    newCustomers.Add(customer3);
-        //    newCustomers.Add(customer4);
-        //    newCustomers.Add(customer5);
+            var restaurant5 = new Restaurants
+            {
+                id = "5c39f9b5df831369c19b6bce",
+                name = "456 Cookies Shop",
+                categories = new List<string> { "Bakery", "Cookies", "Cake", "Coffee" },
+                stars = 4,
+            };
 
-        //    return newCustomers;
-        //}
+            var newRestaurants = new List<Restaurants> { restaurant1, restaurant2, restaurant3, restaurant4, restaurant5 };
+
+            return newRestaurants;
+        }
     }
+
 }
 
 
