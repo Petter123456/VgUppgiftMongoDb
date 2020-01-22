@@ -10,8 +10,6 @@ namespace VgUppgiftMongoDb
 {
     class Program
     {
-        public object s = new SeedDb(); 
-
         static void Main(string[] args)
         {
             
