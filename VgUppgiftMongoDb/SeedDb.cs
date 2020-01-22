@@ -9,10 +9,10 @@ using System.Linq;
 
 namespace VgUppgiftMongoDb
 {
-    public class SeedDb
+    internal class SeedDb
     {
 
-        public async Task MainAsync()
+        internal async Task SeedDatabase()
         {
 
             var client = new MongoClient();
@@ -34,7 +34,7 @@ namespace VgUppgiftMongoDb
             }
         }
 
-        public IEnumerable<Restaurants> CreateNewRestaurants()
+        internal IEnumerable<Restaurants> CreateNewRestaurants()
         {
             var restaurant1 = new Restaurants
             {
@@ -82,4 +82,4 @@ namespace VgUppgiftMongoDb
         }
     }
 }
-}
+
