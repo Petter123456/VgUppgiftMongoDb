@@ -18,8 +18,10 @@ namespace VgUppgiftMongoDb
             var s = new SeedDb();
             var q = new DbQueries();
 
+            //Method to seed Db. Put in separate class for readability.
             s.SeedDatabase().Wait();
 
+            //Methods for each query sending db.collection as parameter.
             q.ReturnAll(q.GetDBCollection());
             q.CategoryCafe(q.GetDBCollection());
             q.AggregateStars(q.GetDBCollection());

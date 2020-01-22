@@ -14,15 +14,14 @@ namespace VgUppgiftMongoDb
 
         internal async Task SeedDatabase()
         {
-
+            //create db and collection 
             var client = new MongoClient();
-
             IMongoDatabase db = client.GetDatabase("labbb3");
-
             var collection = db.GetCollection<Restaurants>("restaurants");
             var newRestaurants = CreateNewRestaurants();
+            
             var collectionCount = collection.Count(new BsonDocument());
-
+            //add data if db is not allready seeded. 
             if (collectionCount > 0)
             {
                 Console.WriteLine("Database has values");
@@ -34,6 +33,7 @@ namespace VgUppgiftMongoDb
             }
         }
 
+        //seed data 
         internal IEnumerable<Restaurants> CreateNewRestaurants()
         {
             var restaurant1 = new Restaurants
